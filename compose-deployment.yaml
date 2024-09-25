@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: gcr.io/gapp-431816/frontend:latest
+          ports:
+            - containerPort: 3000
+      env:
+        - name: API_URL
+          value: "http://34.46.59.74"
+        - name: TOKEN
+          value: "production"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: directus-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: directus
+  template:
+    metadata:
+      labels:
+        app: directus
+    spec:
+      containers:
+        - name: directus
+          image: gcr.io/gapp-431816/directus:10.13.1
+          ports:
+            - containerPort: 8055

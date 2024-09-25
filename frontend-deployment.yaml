@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gapp-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gapp-frontend
+  template:
+    metadata:
+      labels:
+        app: gapp-frontend
+    spec:
+      containers:
+        - name: gapp-frontend
+          image: us-central1-docker.pkg.dev/gapp-431816/gapp-repo/gapp-frontend:latest
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gapp-frontend-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 3000
+  selector:
+    app: gapp-frontend
